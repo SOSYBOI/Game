@@ -182,7 +182,7 @@ MonoBehaviour:
   playerMovement: {fileID: 15469955}
   playerCombat: {fileID: 15469954}
   playerState: {fileID: 15469961}
-  skillSystem: {fileID: 15469969}
+  skillSystem: {fileID: 15469970}
 --- !u!4 &15469968 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3855676580623915636, guid: 6ac941d0134d6a341a4b661684dc15e8,
@@ -190,6 +190,18 @@ Transform:
   m_PrefabInstance: {fileID: 603587611}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &15469969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15469952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b75cc01b7870646ad86a3b656a6d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &15469970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9038,6 +9050,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 15469961}
+    - targetCorrespondingSourceObject: {fileID: 7519952975792970271, guid: 6ac941d0134d6a341a4b661684dc15e8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 15469970}
     - targetCorrespondingSourceObject: {fileID: 7519952975792970271, guid: 6ac941d0134d6a341a4b661684dc15e8,
         type: 3}
       insertIndex: -1

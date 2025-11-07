@@ -1,4 +1,4 @@
-# Phase 1：核心基礎架構實作指南
+# README
 
 ## 目錄結構
 
@@ -16,6 +16,14 @@ Assets/
 │   │   ├── PlayerMovement.cs
 │   │   ├── PlayerCombat.cs
 │   │   ├── PlayerState.cs
+│   ├── Skills/
+│   │   ├── BaseSkill.cs
+│   │   ├── Skill1.cs
+│   │   ├── Skill2.cs
+│   │   ├── Skill3.cs
+│   │   ├── Skill4.cs
+│   │   ├── CooldownSystem.cs
+│   │   ├── SkillSystem.cs
 │   ├── Data/
 │   │   ├── PlayerStats.cs
 │   │   ├── PersistentState.cs
@@ -24,7 +32,6 @@ Assets/
 ├── Prefabs/
 ├── Art/
 ├── UI/
-├── Data/
 └── Plugins/
 ```
 
@@ -101,15 +108,29 @@ EventManager.TriggerEvent("OnGameOver");
 ```
 
 **常見事件列表：**
+
+**遊戲狀態事件：**
 - `OnGameStarted` - 遊戲開始
 - `OnGamePaused` - 遊戲暫停
 - `OnGameResumed` - 遊戲繼續
 - `OnGameOver` - 遊戲結束
+
+**玩家移動事件：**
 - `OnPlayerStateMoving` - 玩家移動
+- `OnPlayerStateIdle` - 玩家待機
+
+**戰鬥事件：**
 - `OnEnemyLocked` - 鎖定敵人
 - `OnLockCleared` - 解除鎖定
 - `OnDashStarted` - 開始衝刺
 - `OnDashEnded` - 衝刺結束
+
+**技能事件（Phase 3）：**
+- `OnSkill{skillIndex}Cast` - 技能開始施放（例如 `OnSkill0Cast`）
+- `OnSkill{skillIndex}CastComplete` - 技能施放完成
+- `OnSkill{skillIndex}Ready` - 技能冷卻完成，可以施放
+- `OnSkill{skillIndex}OnCooldown` - 技能進入冷卻
+- `OnSkill{skillIndex}CooldownUpdated` - 技能冷卻更新（每幀）
 
 ---
 
@@ -379,5 +400,313 @@ public class PlayerController : MonoBehaviour
 - `OnGameOver` - 禁用玩家、設定狀態為 `Dead`
 - `OnGamePaused` - 禁用玩家移動與戰鬥系統
 - `OnGameResumed` - 啟用玩家系統
+
+---
+
+## 技能系統（Skill System）
+
+### 技能系統架構概述
+
+技能系統由四個主要元件組成：
+
+1. **BaseSkill** - 技能基底類別，定義所有技能的核心邏輯
+2. **Skill1、Skill2、Skill3、Skill4** - 具體技能實現
+3. **CooldownSystem** - 冷卻池管理系統
+4. **SkillSystem** - 高層技能管理與輸入協調
+
+### 技能冷卻池系統
+
+技能使用**池模型**而非傳統冷卻系統。此模型允許玩家連續施放技能直到池耗盡，然後隨時間恢復。
+
+**池模型範例：**
+- 最大冷卻池 = 40
+- 每次施放消耗 = 10
+- 可連續施放 = 4 次
+- 每秒恢復 = 1 點
+- 完全恢復時間 = 40 秒
+
+```
+時間線：
+t=0s:   施放1 (池: 40 → 30)
+t=0.1s: 施放2 (池: 30 → 20)
+t=0.2s: 施放3 (池: 20 → 10)
+t=0.3s: 施放4 (池: 10 → 0) [無法施放]
+t=0.3~10.3s: 恢復階段 (池: 0 → 10，可再施放1次)
+```
+
+---
+
+### BaseSkill：技能基類
+
+**責任：** 定義所有技能的通用邏輯
+
+**主要屬性：**
+
+```csharp
+public abstract class BaseSkill
+{
+    // 技能標識
+    public int SkillId { get; }
+    public string SkillName { get; }
+    
+    // 冷卻池配置
+    public float MaxCooldownPool { get; }           // 最大池容量
+    public float CurrentCooldownPool { get; }       // 當前池值
+    public float CooldownCostPerCast { get; }       // 每次施放的消耗
+    public float CooldownRegenRate { get; }         // 每秒恢復量
+    
+    // 施放配置
+    public float CastTime { get; }                  // 施放時間
+    public float BaseDamage { get; }                // 基礎傷害
+    
+    // 狀態查詢
+    public bool IsCasting { get; }                  // 正在施放中
+    public bool IsReady { get; }                    // 可以施放（池足夠 & 未在施放）
+    public int AvailableCasts { get; }              // 可連續施放次數
+    
+    public virtual void Cast(Transform casterTransform);
+    public virtual void UpdateSkill();
+    protected virtual void OnCastComplete();
+    public virtual void ResetCooldown();
+    public virtual void ApplyUpgrade(string upgradeType, float value);
+    public float GetPoolPercentage();
+}
+```
+
+**使用方式：**
+
+```csharp
+// 檢查技能是否可施放
+if (skill.IsReady)
+{
+    skill.Cast(playerTransform);
+}
+
+// 查詢可連續施放的次數
+int casts = skill.AvailableCasts; // 例如 4
+
+// 重置冷卻（例如在檢查點休息時）
+skill.ResetCooldown();
+
+// 套用升級效果
+skill.ApplyUpgrade("IncreaseDamage", 5f);
+skill.ApplyUpgrade("ReduceCost", 2f);
+```
+
+**支援的升級類型：**
+- `IncreaseMaxPool` - 增加最大池容量
+- `ReduceCost` - 減少每次施放的消耗
+- `IncreaseRegenRate` - 增加每秒恢復量
+- `IncreaseDamage` - 增加基礎傷害
+- `ReduceCastTime` - 減少施放時間
+
+---
+
+### CooldownSystem：冷卻池管理
+
+**責任：** 管理四個技能的冷卻池，追蹤狀態變化
+
+**主要方法：**
+
+```csharp
+public class CooldownSystem : MonoBehaviour
+{
+    public static CooldownSystem Instance { get; }
+    
+    // 施放技能並扣除冷卻池
+    public bool CastSkill(int skillIndex, Transform casterTransform);
+    
+    // 查詢冷卻狀態
+    public float GetCooldownNormalized(int skillIndex);    // 0-1 百分比
+    public float GetCooldownRemaining(int skillIndex);     // 剩餘池值
+    public int GetAvailableCasts(int skillIndex);          // 可連續施放次數
+    
+    // 重置所有技能冷卻（檢查點使用）
+    public void ResetAllCooldowns();
+    
+    // 獲取技能物件以進行高級操作
+    public BaseSkill GetSkill(int skillIndex);
+}
+```
+
+**使用方式：**
+
+```csharp
+CooldownSystem cooldownSystem = CooldownSystem.Instance;
+
+// 嘗試施放技能
+if (cooldownSystem.CastSkill(0, playerTransform))
+{
+    Debug.Log("技能1成功施放");
+}
+
+// 查詢冷卻進度（0-1）
+float progress = cooldownSystem.GetCooldownNormalized(0);
+// 更新 UI 冷卻條為 progress * 100%
+
+// 查詢剩餘池值
+float remaining = cooldownSystem.GetCooldownRemaining(0);
+// 顯示 "已施放 X 次，可再施放 Y 次"
+
+// 檢查點休息時重置所有冷卻
+cooldownSystem.ResetAllCooldowns();
+```
+
+**觸發的事件：**
+- `OnSkill{skillIndex}Ready` - 技能冷卻完成，可施放
+- `OnSkill{skillIndex}OnCooldown` - 技能進入冷卻（池不足）
+- `OnSkill{skillIndex}CooldownUpdated` - 冷卻狀態更新（每幀，用於 UI）
+
+---
+
+### SkillSystem：技能高層管理
+
+**責任：** 協調技能施放、與玩家狀態互動、提供 UI 查詢介面
+
+**主要方法：**
+
+```csharp
+public class SkillSystem : MonoBehaviour
+{
+    public static SkillSystem Instance { get; }
+    
+    // 嘗試施放技能（檢查玩家狀態）
+    public bool AttemptCastSkill(int skillIndex);
+    
+    // UI 查詢方法
+    public float GetSkillCooldownNormalized(int skillIndex);    // 冷卻進度 0-1
+    public float GetSkillCooldownRemaining(int skillIndex);     // 剩餘池值
+    public int GetSkillAvailableCasts(int skillIndex);          // 可連續施放次數
+    public bool IsSkillReady(int skillIndex);                   // 技能是否可施放
+}
+```
+
+**使用方式：**
+
+```csharp
+SkillSystem skillSystem = SkillSystem.Instance;
+
+// 嘗試施放技能 1（會檢查玩家是否在施法或被鎖定）
+if (skillSystem.AttemptCastSkill(0))
+{
+    Debug.Log("技能1成功施放");
+}
+else
+{
+    Debug.Log("技能1施放失敗（玩家被鎖定或在施法）");
+}
+
+// UI 更新冷卻進度
+for (int i = 0; i < 4; i++)
+{
+    float progress = skillSystem.GetSkillCooldownNormalized(i);
+    int availableCasts = skillSystem.GetSkillAvailableCasts(i);
+    
+    // 更新 UI 冷卻條
+    cooldownBar[i].fillAmount = progress;
+    castCountText[i].text = $"{availableCasts}x";
+}
+```
+
+**工作流程：**
+
+1. 玩家按下技能鍵（Q/W/E/R）
+2. `InputManager` 偵測輸入
+3. `SkillSystem.HandleSkillInput()` 調用 `AttemptCastSkill()`
+4. `SkillSystem` 檢查 `PlayerState.IsActionLocked`
+5. 若允許，呼叫 `CooldownSystem.CastSkill()`
+6. `CooldownSystem` 驗證池值是否足夠
+7. 若足夠，扣除冷卻池，設定 `PlayerState = CastingSkill`
+8. 技能進入施放階段（計時 `castTime` 秒）
+9. 施放完成後，觸發 `OnSkill{skillIndex}CastComplete` 事件
+10. `SkillSystem` 監聽事件，重置 `PlayerState` 回 `Idle`
+11. 同時冷卻池持續恢復
+
+**整合與事件流：**
+
+```csharp
+// SkillSystem 內部自動處理的流程
+
+private void HandleSkillInput()
+{
+    if (InputManager.GetSkill1Input())
+        AttemptCastSkill(0);
+    // ... 其他技能
+}
+
+public bool AttemptCastSkill(int skillIndex)
+{
+    // 1. 檢查玩家狀態
+    if (playerState.IsCasting || playerState.IsActionLocked)
+    {
+        Debug.Log("Cannot cast: Player is already performing an action.");
+        return false;
+    }
+
+    // 2. 嘗試施放（CooldownSystem 驗證池值）
+    if (cooldownSystem.CastSkill(skillIndex, casterTransform))
+    {
+        // 3. 設定玩家狀態為施法中
+        playerState.SetState(PlayerState.State.CastingSkill);
+        
+        // 4. 訂閱施放完成事件
+        EventManager.StartListening($"OnSkill{skillIndex}CastComplete", OnCastComplete);
+        
+        return true;
+    }
+
+    return false;
+}
+
+private void OnCastComplete()
+{
+    // 5. 施放完成，重置玩家狀態
+    playerState.ResetToIdle();
+    
+    // 6. 解除事件訂閱
+    EventManager.StopListening($"OnSkill{currentCastingSkill}CastComplete", OnCastComplete);
+    
+    currentCastingSkill = -1;
+}
+```
+
+---
+
+### 具體技能實現示例
+
+**Skill1.cs 範例：**
+
+```csharp
+public class Skill1 : BaseSkill
+{
+    public Skill1()
+    {
+        skillName = "Fireball";
+        description = "Launch a fireball at enemies";
+        
+        maxCooldownPool = 40f;        // 總池容量
+        cooldownCostPerCast = 10f;    // 每次消耗 10 (可施放 4 次)
+        cooldownRegenRate = 1f;       // 每秒恢復 1 點 (40 秒完全恢復)
+        
+        castTime = 1f;
+        baseDamage = 10f;
+        
+        currentCooldownPool = maxCooldownPool;
+    }
+
+    public override void Cast(Transform casterTransform)
+    {
+        base.Cast(casterTransform);
+        // Skill1 特定邏輯可在此擴展
+    }
+
+    protected override void OnCastComplete()
+    {
+        base.OnCastComplete();
+        Debug.Log("Fireball Effect Applied!");
+        // 在此添加火球特效、傷害計算等邏輯
+    }
+}
+```
 
 ---

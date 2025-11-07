@@ -7,7 +7,6 @@ public class Skill2 : BaseSkill
     {
         skillName = "Teleport";
         description = "Teleport";
-        baseCooldown = 40f;
         castTime = 1f;
         baseDamage = 10f;
     }

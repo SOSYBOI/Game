@@ -7,7 +7,6 @@ public class Skill4 : BaseSkill
     {
         skillName = "ASD";
         description = "ASD";
-        baseCooldown = 40f;
         castTime = 1f;
         baseDamage = 10f;
     }
