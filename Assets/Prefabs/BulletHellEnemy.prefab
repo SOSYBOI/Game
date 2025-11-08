@@ -145,8 +145,8 @@ MonoBehaviour:
   initialDirectionChangeProbability: 0.1
   maxDirectionChangeProbability: 0.8
   shouldRespawn: 1
-  bulletInterval: 0.1
-  bulletsPerCard: 12
-  maxAngleDeviation: 10
-  bulletSpeed: 30
-  bulletLifetime: 5
+  circleBulletCount: 6
+  circleInitialRadius: 1
+  circleRadiusGrowth: 2
+  circleRotationSpeed: 240
+  circleFormationSpeed: 20
