@@ -4,15 +4,15 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("生成設定")]
-    [SerializeField] private BaseEnemy enemyPrefab;
-    [SerializeField] private bool shouldRespawnAfterCheckpoint = true;
+    [SerializeField] private BaseEnemy enemyPrefab;              // 要生成的敵人 Prefab
+    [SerializeField] private bool shouldRespawnAfterCheckpoint = true;  // 是否在檢查點休息後重生
 
-    private BaseEnemy spawnedEnemy;
-    private Vector3 spawnPosition;
+    private BaseEnemy spawnedEnemy;   // 已生成的敵人實例
+    private Vector3 spawnPosition;    // 生成點位置
 
     private void Start()
     {
-        // 記錄生成點位
+        // 記錄生成點位置
         spawnPosition = transform.position;
         
         // 立即生成敵人
@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefab == null)
         {
-            Debug.LogError("EnemySpawner: 未指定敵人 Prefab！");
+            Debug.LogError("EnemySpawner: 未指定敵人 Prefab!");
             return;
         }
 
@@ -67,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// 在編輯器中可視化生成點。
+    /// 在編輯器中可視化生成點（綠色線框球體）。
     /// </summary>
     private void OnDrawGizmosSelected()
     {

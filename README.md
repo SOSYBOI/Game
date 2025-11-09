@@ -25,6 +25,18 @@ Assets/
 │   │   ├── Skill4.cs
 │   │   ├── CooldownSystem.cs
 │   │   ├── SkillSystem.cs
+│   ├── Enemy/
+│   │   ├── BaseEnemy.cs
+│   │   ├── EnemyManager.cs
+│   │   ├── EnemySpawner.cs
+│   │   ├── BulletHellEnemy.cs
+│   ├── Bullet/
+│   │   ├── Bullet.cs
+│   │   ├── BulletManager.cs
+│   │   ├── IBulletBehavior.cs
+│   │   ├── Behaviors/
+│   │   │   ├── VirtualOrbitBehavior.cs
+│   │   │   └── (其他行為類別)
 │   ├── Data/
 │   │   ├── PlayerStats.cs
 │   │   ├── PersistentState.cs
@@ -707,5 +719,534 @@ public class Skill1 : BaseSkill
     }
 }
 ```
+
+---
+
+## 敵人系統（Enemy System）
+
+### 敵人系統架構概述
+
+敵人系統由四個主要元件組成：
+
+1. **BaseEnemy** - 敵人基類，定義所有敵人的核心邏輯
+2. **BulletHellEnemy** 及其他派生類 - 具體敵人類型實現
+3. **EnemyManager** - 敵人生命週期與生成管理
+4. **EnemySpawner** - 單個生成點的敵人生成與重生控制
+
+### 敵人狀態機
+
+每個敵人擁有四個狀態：
+
+| 狀態 | 描述 | 觸發條件 |
+|------|------|---------|
+| **Idle** | 待機狀態，不執行任何行動 | 敵人初始化或失去玩家視線 |
+| **Attacking** | 攻擊狀態，執行符卡（彈幕）模式 | 看到玩家進入視野 |
+| **Evading** | 走位狀態，遠離玩家並隨機移動 | 符卡攻擊完成後 |
+| **Dead** | 死亡狀態，停止所有行動 | 敵人生命值歸零 |
+
+**狀態轉移流程：**
+```
+Idle → (看到玩家) → Attacking → (符卡完成) → Evading → (走位時長到期) → Attacking
+       ↑ (失去視線)                    ↑ (失去視線)
+       └─────────────────────────────┘
+
+Dead: 任何狀態都可能轉移至此（當生命值 ≤ 0）
+```
+
+---
+
+### BaseEnemy：敵人基類
+
+**責任：** 定義所有敵人的通用邏輯（狀態機、視野檢測、走位、傷害系統）
+
+**主要屬性：**
+
+```csharp
+public abstract class BaseEnemy : MonoBehaviour
+{
+    [Header("基礎屬性")]
+    public float maxHP = 50f;           // 最大生命值
+    public float CurrentHP { get; }     // 當前生命值
+    
+    [Header("移動")]
+    public float moveSpeed = 5f;           // 移動速度
+    public float stoppingDistance = 2f;    // 停止距離（攻擊範圍）
+    
+    [Header("偵測")]
+    public float sightRange = 20f;         // 視野範圍
+    public float fieldOfViewAngle = 90f;   // 視野角度
+    public LayerMask playerLayer;          // 玩家圖層
+    public LayerMask wallLayer;            // 普通牆壁圖層
+    public LayerMask invisibleWallLayer;   // 隱形牆壁圖層
+    
+    [Header("走位逃亡")]
+    public float evadeRangeMin = 10f;      // 最小走位距離
+    public float evadeRangeMax = 20f;      // 最大走位距離
+    public float evadeDurationMin = 2f;    // 走位時長最小值
+    public float evadeDurationMax = 5f;    // 走位時長最大值
+    public float directionChangeInterval = 1f;  // 每秒檢查改變方向的概率
+    
+    [Header("重生設定")]
+    public bool shouldRespawn = true;      // true = 普通敵人, false = Boss
+    
+    // 狀態查詢
+    public float CurrentHP { get; }
+    public float MaxHP { get; }
+    public bool IsDead { get; }
+    public bool ShouldRespawn { get; }
+}
+```
+
+**主要方法：**
+
+```csharp
+// 核心系統
+protected virtual void CheckForPlayer();      // 檢查玩家是否在視野內
+protected virtual void UpdateState();         // 狀態機更新
+protected virtual void ApplyGravity();        // 套用重力
+
+// 攻擊相關
+protected virtual void ExecuteSpellCard();    // 派生類實作具體攻擊邏輯
+protected virtual bool IsSpellCardFinished(); // 判斷符卡是否完成
+protected virtual void OnAttackEnd();         // 攻擊結束時重置狀態
+
+// 走位相關
+protected virtual void PrepareEvadePhase();        // 準備走位階段
+protected virtual void ChooseNewEvadeDirection();  // 選擇新走位方向
+protected virtual void UpdateEvadePhase();         // 更新走位邏輯
+
+// 生命週期
+public virtual void TakeDamage(float damage);  // 受傷
+protected virtual void Die();                  // 死亡
+public virtual void ResetEnemy();              // 重置敵人（重生時調用）
+```
+
+**視野系統：**
+- 使用距離、角度與射線檢測三層驗證
+- 支援視野遮擋（普通牆或隱形牆可阻擋視線）
+- 玩家必須同時滿足：距離 < sightRange、角度 < fieldOfViewAngle/2、射線不被遮擋
+
+**走位邏輯：**
+- 隨機選擇一個 N~M 秒的走位時長
+- 每秒根據逐漸升高的概率改變方向（初期 10%，後期最高 80%）
+- 遇到牆壁或隱形牆時立即改變方向
+- 走位完成後回到攻擊狀態
+
+**使用方式：**
+
+```csharp
+// 派生類實例
+public class BulletHellEnemy : BaseEnemy
+{
+    protected override void ExecuteSpellCard()
+    {
+        // 在此實作具體的彈幕發射邏輯
+    }
+    
+    protected override bool IsSpellCardFinished()
+    {
+        // 返回 true 表示符卡完成
+        return bulletsFired >= maxBullets;
+    }
+    
+    protected override void OnAttackEnd()
+    {
+        base.OnAttackEnd();
+        // 重置攻擊相關的計數器、計時器等
+    }
+}
+
+// 外部傷害敵人
+enemy.TakeDamage(10f);
+```
+
+**觸發的事件：**
+- `OnEnemy{enemyID}Damaged` - 敵人受傷時
+- `OnEnemy{enemyID}Died` - 敵人死亡時
+- `OnEnemyDefeated` - 任何敵人死亡時
+
+---
+
+### EnemyManager：敵人全局管理
+
+**責任：** 管理敵人生命週期、追蹤 Boss、協調敵人重生
+
+**主要方法：**
+
+```csharp
+public class EnemyManager : MonoBehaviour
+{
+    public static EnemyManager Instance { get; }
+    
+    // 敵人列表管理
+    public void RefreshEnemyList();                    // 掃描場景中的所有敵人
+    public List<BaseEnemy> GetActiveEnemies();         // 獲取所有活躍敵人
+    public int GetActiveEnemyCount();                  // 獲取活躍敵人數量
+    
+    // Boss 管理
+    public BaseEnemy GetBoss(string bossName);         // 透過名稱獲取特定 Boss
+    
+    // 敵人註冊/反註冊
+    public void RegisterEnemy(BaseEnemy enemy);        // 註冊新敵人（生成時調用）
+    public void UnregisterEnemy(BaseEnemy enemy);      // 反註冊敵人（死亡時調用）
+    
+    // 重生管理
+    public void RespawnRegularEnemies();               // 重生普通敵人
+    public void DespawnAllRegularEnemies();            // 清除所有普通敵人
+}
+```
+
+**敵人分類：**
+- **普通敵人** (`shouldRespawn = true`) - 在檢查點休息時會重生
+- **Boss** (`shouldRespawn = false`) - 永遠不會自動重生，需手動管理
+
+**使用方式：**
+
+```csharp
+// 取得所有活躍敵人
+List<BaseEnemy> enemies = EnemyManager.Instance.GetActiveEnemies();
+
+// 取得特定 Boss
+BaseEnemy boss = EnemyManager.Instance.GetBoss("Boss_Dragon");
+
+// 檢查是否還有敵人活著
+int aliveCount = EnemyManager.Instance.GetActiveEnemyCount();
+
+// 檢查點重生普通敵人
+EnemyManager.Instance.RespawnRegularEnemies();
+```
+
+---
+
+### EnemySpawner：敵人生成控制
+
+**責任：** 管理單個生成點的敵人生成與重生
+
+**主要方法：**
+
+```csharp
+public class EnemySpawner : MonoBehaviour
+{
+    [SerializeField] private BaseEnemy enemyPrefab;                    // 敵人預製物
+    [SerializeField] private bool shouldRespawnAfterCheckpoint = true; // 是否在檢查點重生
+    
+    private BaseEnemy spawnedEnemy;   // 已生成的敵人
+    private Vector3 spawnPosition;    // 生成點位置
+}
+```
+
+**工作流程：**
+
+1. 場景啟動時，EnemySpawner 在指定位置生成敵人
+2. 敵人被註冊到 EnemyManager
+3. 敵人在場景中活動
+4. 敵人被擊敗時，設定為 inactive 狀態
+5. 玩家在檢查點休息時，EnemySpawner 收到 `OnCheckpointRest` 事件
+6. 若敵人設定允許重生（`shouldRespawnAfterCheckpoint = true`），則重置敵人並重新啟動
+
+**使用方式：**
+
+```csharp
+// 在編輯器中指定敵人預製物和生成點
+// EnemySpawner 自動處理生成與重生
+```
+
+**重要：** 每個 EnemySpawner 只控制一個敵人的生成點。若要生成多個相同類型的敵人，需要多個 EnemySpawner 實例。
+
+---
+
+## 子彈系統（Bullet System）
+
+### 子彈系統架構概述
+
+子彈系統採用**組件化設計**，使用行為(Behavior)模式使子彈支援複雜的彈幕效果。
+
+主要元件：
+
+1. **Bullet** - 子彈核心類，管理行為與生命週期
+2. **IBulletBehavior** - 行為介面，定義子彈的運動方式
+3. **VirtualOrbitBehavior** - 環繞旋轉行為範例
+4. **BulletManager** - 子彈生成與管理
+5. **BulletHellEnemy** - 使用子彈系統的敵人範例
+
+---
+
+### Bullet：子彈核心
+
+**責任：** 管理子彈的物理、生命週期和行為系統
+
+**主要屬性與方法：**
+
+```csharp
+public class Bullet : MonoBehaviour
+{
+    public Vector3 velocity = Vector3.zero;  // 子彈速度向量
+    public Vector3 position;                 // 子彈當前位置
+    public Rigidbody rb;                     // 剛體元件參考
+    
+    public float lifetime = 5f;    // 子彈最大生存時間
+    
+    // 行為系統
+    public void AddBehavior(IBulletBehavior behavior);        // 添加行為
+    public void AddBehaviors(params IBulletBehavior[] behaviors);  // 一次添加多個行為
+    public void RemoveBehavior(IBulletBehavior behavior);     // 移除行為
+    public void ClearBehaviors();                             // 清空所有行為
+}
+```
+
+**特性：**
+- 支援添加多個行為，每個行為獨立運作
+- 每幀自動更新所有行為
+- 行為返回 false 時自動移除
+- 超過生存時間自動銷毀
+
+**使用方式：**
+
+```csharp
+// 創建子彈並附加行為
+Bullet bullet = BulletManager.Instance.SpawnBullet(position, behavior1, behavior2);
+
+// 在運行時添加新行為
+bullet.AddBehavior(behavior3);
+
+// 移除行為
+bullet.RemoveBehavior(behavior1);
+```
+
+---
+
+### IBulletBehavior：行為介面
+
+**責任：** 定義子彈的運動邏輯
+
+**介面定義：**
+
+```csharp
+public interface IBulletBehavior
+{
+    // 每幀更新。返回 true 表示行為繼續，false 表示行為完成
+    bool Update(Bullet bullet, float deltaTime);
+    
+    // 行為初始化時調用
+    void Initialize(Bullet bullet);
+    
+    // 行為結束時調用
+    void OnBehaviorEnd(Bullet bullet);
+}
+```
+
+**設計哲學：**
+- 每個行為獨立管理一個方面的運動（軌跡、加速、衝擊等）
+- 多個行為可疊加，實現複雜效果
+- 返回 false 後自動從子彈中移除
+
+---
+
+### VirtualOrbitBehavior：環繞旋轉行為
+
+**責任：** 實現子彈圍繞虛擬中心點旋轉並擴散的運動
+
+**主要屬性：**
+
+```csharp
+public class VirtualOrbitBehavior : IBulletBehavior
+{
+    private Vector3 virtualCenterPosition;   // 虛擬中心點位置
+    private Vector3 centerVelocity;          // 中心點移動速度
+    private float currentRadius;             // 當前軌道半徑
+    private float radiusGrowthRate;          // 半徑增長速率
+    private float rotationSpeed;             // 旋轉速度（度/秒）
+    private float currentAngle;              // 當前角度
+}
+```
+
+**使用範例：**
+
+```csharp
+// 創建環繞行為：
+// - 中心點在敵人位置，以 20 m/s 速度朝玩家方向移動
+// - 初始半徑 1m，每秒擴張 12m
+// - 旋轉速度 100 度/秒
+
+var orbitBehavior = new VirtualOrbitBehavior(
+    startCenterPos: enemyPosition,
+    centerMoveVelocity: directionToPlayer * 20f,
+    initialRadius: 1f,
+    radiusGrowth: 12f,
+    rotSpeed: 100f
+);
+
+BulletManager.Instance.SpawnBullet(enemyPosition, orbitBehavior);
+```
+
+**效果說明：**
+- 子彈以中心點旋轉，形成環形彈幕
+- 半徑逐漸擴張，形成推進效果
+- 中心點移動，使整個彈幕追向玩家
+
+---
+
+### BulletManager：子彈生成管理
+
+**責任：** 統一管理子彈生成與預製物
+
+**主要方法：**
+
+```csharp
+public class BulletManager : MonoBehaviour
+{
+    public static BulletManager Instance { get; }
+    
+    // 創建子彈並附加行為（可變參數）
+    public Bullet SpawnBullet(Vector3 position, params IBulletBehavior[] behaviors);
+}
+```
+
+**自動化特性：**
+- 若沒有指定子彈預製物，自動創建預設紅色球體子彈
+- 預設子彈包含 Rigidbody、SphereCollider、MeshRenderer
+
+**使用方式：**
+
+```csharp
+// 簡單生成
+Bullet bullet = BulletManager.Instance.SpawnBullet(position, behavior);
+
+// 多行為生成
+Bullet bullet = BulletManager.Instance.SpawnBullet(
+    position,
+    behavior1,
+    behavior2,
+    behavior3
+);
+```
+
+---
+
+### BulletHellEnemy：彈幕地獄敵人範例
+
+**責任：** 演示如何使用子彈系統製作複雜彈幕攻擊
+
+**主要邏輯：**
+
+```csharp
+public class BulletHellEnemy : BaseEnemy
+{
+    private float nextBulletTime = 0f;  // 下次發射時間
+    private int bulletsFired = 0;       // 已發射次數
+    
+    // 執行符卡：定時發射圓形旋轉陣型
+    protected override void ExecuteSpellCard()
+    {
+        if (Time.time >= nextBulletTime)
+        {
+            FireCircleFormationWithVirtualCenter();
+            bulletsFired++;
+            nextBulletTime = Time.time + 0.6f;
+        }
+    }
+    
+    // 符卡結束條件：發射 5 次
+    protected override bool IsSpellCardFinished()
+    {
+        return bulletsFired >= 5;
+    }
+}
+```
+
+**攻擊模式：**
+
+1. 每 0.6 秒發射一次圓形陣型
+2. 每次發射 6 顆子彈，均勻分布在圓形軌道上
+3. 所有子彈圍繞虛擬中心點旋轉並向玩家方向移動
+4. 半徑逐漸擴張，形成推進波效果
+5. 發射 5 次後符卡完成，進入走位階段
+
+**視覺效果：**
+```
+回合 1: 6 顆子彈圍繞形成的圓形→推進波
+回合 2: 再發射 6 顆子彈，形成第二波推進波
+回合 3-5: 類似，最終形成多波相疊的彈幕攻擊
+```
+
+---
+
+### 擴展示例：創建新行為
+
+**步驟：**
+
+```csharp
+// 1. 實作 IBulletBehavior 介面
+public class SpiralBehavior : IBulletBehavior
+{
+    private float spiralProgress = 0f;
+    private float totalDuration = 3f;
+    
+    public bool Update(Bullet bullet, float deltaTime)
+    {
+        spiralProgress += deltaTime;
+        
+        if (spiralProgress >= totalDuration)
+            return false;  // 行為完成
+        
+        // 計算螺旋軌跡
+        float angle = (spiralProgress / totalDuration) * 360f * 3f;  // 3 圈
+        float radius = Mathf.Lerp(0f, 10f, spiralProgress / totalDuration);
+        
+        Vector3 offset = Quaternion.Euler(0, angle, 0) * Vector3.forward * radius;
+        bullet.transform.position += offset * deltaTime;
+        
+        return true;  // 行為繼續
+    }
+    
+    public void Initialize(Bullet bullet) { }
+    public void OnBehaviorEnd(Bullet bullet) { }
+}
+
+// 2. 使用新行為
+BulletManager.Instance.SpawnBullet(position, new SpiralBehavior());
+```
+
+---
+
+### 敵人攻擊流程整合
+
+**完整流程圖：**
+
+```
+EnemyManager.RefreshEnemyList()
+    ↓
+每個 BaseEnemy 進入 Update 循環
+    ↓
+CheckForPlayer() → 檢查玩家是否可見
+    ↓
+UpdateState() → 狀態機
+    ├─ Idle: 等待玩家出現
+    ├─ Attacking: 
+    │   └─ ExecuteSpellCard() → 發射子彈
+    │       └─ BulletManager.SpawnBullet(position, behaviors)
+    │           └─ 子彈進入場景，執行行為
+    ├─ Evading: 移動與躲閃
+    └─ Dead: 停止所有行動
+
+敵人死亡 → TakeDamage() → Die()
+    └─ 觸發 OnEnemy{enemyID}Died 事件
+    └─ EnemyManager 反註冊敵人
+    └─ EnemySpawner 標記敵人需要重生
+    
+玩家休息於檢查點 → OnCheckpointRest 事件
+    └─ EnemyManager.RespawnRegularEnemies()
+    └─ 每個 EnemySpawner 重置並重新激活敵人
+```
+
+---
+
+### 設計特點與最佳實踐
+
+**優勢：**
+- **模組化** - 敵人、子彈、行為各自獨立
+- **可擴展** - 輕鬆添加新敵人類型或行為模式
+- **可視化調試** - Gizmos 顯示生成點與視野範圍
+- **事件驅動** - 敵人與其他系統通過事件通訊
 
 ---

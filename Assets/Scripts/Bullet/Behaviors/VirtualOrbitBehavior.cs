@@ -3,15 +3,16 @@ using UnityEngine;
 
 /// <summary>
 /// 圍繞虛擬中心點旋轉的行為（中心點會隨時間移動）。
+/// 適合製作螺旋彈幕、環繞攻擊等效果。
 /// </summary>
 public class VirtualOrbitBehavior : IBulletBehavior
 {
-    private Vector3 virtualCenterPosition;
-    private Vector3 centerVelocity;
-    private float currentRadius;
-    private float radiusGrowthRate;
-    private float rotationSpeed;
-    private float currentAngle;
+    private Vector3 virtualCenterPosition;   // 虛擬中心點位置
+    private Vector3 centerVelocity;          // 中心點移動速度
+    private float currentRadius;             // 當前軌道半徑
+    private float radiusGrowthRate;          // 半徑增長速率
+    private float rotationSpeed;             // 旋轉速度（度/秒）
+    private float currentAngle;              // 當前角度
     
     public VirtualOrbitBehavior(
         Vector3 startCenterPos,
@@ -50,9 +51,12 @@ public class VirtualOrbitBehavior : IBulletBehavior
         // 更新彈幕位置
         UpdateBulletPosition(bullet);
         
-        return true;
+        return true;  // 持續執行
     }
     
+    /// <summary>
+    /// 根據當前角度與半徑計算子彈位置。
+    /// </summary>
     private void UpdateBulletPosition(Bullet bullet)
     {
         Vector3 offset = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * currentRadius;

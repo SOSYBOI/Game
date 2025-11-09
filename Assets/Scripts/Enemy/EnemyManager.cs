@@ -14,7 +14,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
-        // 單例模式
+        // 單例模式實現
         if (Instance == null)
         {
             Instance = this;
@@ -33,6 +33,7 @@ public class EnemyManager : MonoBehaviour
 
     /// <summary>
     /// 刷新活躍敵人列表。掃描場景中所有 BaseEnemy 並分類。
+    /// 區分普通敵人與 Boss（根據 shouldRespawn 屬性）。
     /// </summary>
     public void RefreshEnemyList()
     {
@@ -60,7 +61,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 取得所有活躍敵人（回傳拷貝）。
+    /// 取得所有活躍敵人。
     /// </summary>
     public List<BaseEnemy> GetActiveEnemies()
     {
@@ -80,7 +81,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 註冊新生成的敵人。
+    /// 註冊新生成的敵人。通常由 EnemySpawner 調用。
     /// </summary>
     public void RegisterEnemy(BaseEnemy enemy)
     {
@@ -141,7 +142,7 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void DespawnAllRegularEnemies()
     {
-        // 使用臨時列表以避免迭代中修改列表
+        // 使用臨時列表以避免在迭代中修改原列表
         foreach (BaseEnemy enemy in new List<BaseEnemy>(activeEnemies))
         {
             if (enemy.ShouldRespawn)
