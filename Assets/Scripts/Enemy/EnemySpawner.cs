@@ -1,5 +1,6 @@
 // Assets/Scripts/Enemy/EnemySpawner.cs
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -41,6 +42,18 @@ public class EnemySpawner : MonoBehaviour
 
         // 實例化敵人 Prefab
         spawnedEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+        // 將敵人移到當前級別場景
+        Scene currentLevelScene = gameObject.scene;
+        if (currentLevelScene.IsValid())
+        {
+            SceneManager.MoveGameObjectToScene(spawnedEnemy.gameObject, currentLevelScene);
+            Debug.Log($"Enemy spawned in scene: {currentLevelScene.name}");
+        }
+        else
+        {
+            Debug.LogWarning("Could not assign enemy to current level scene");
+        }
         
         // 將敵人註冊到 EnemyManager
         EnemyManager.Instance.RegisterEnemy(spawnedEnemy);

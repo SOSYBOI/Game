@@ -1,5 +1,6 @@
 // Assets/Scripts/Level/Player/PlayerCombat.cs
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -48,6 +49,14 @@ public class PlayerCombat : MonoBehaviour
         if (lockOnIndicatorPrefab != null)
         {
             currentLockOnIndicator = Instantiate(lockOnIndicatorPrefab);
+
+            Scene playerScene = gameObject.scene;
+            if (playerScene.IsValid())
+            {
+                SceneManager.MoveGameObjectToScene(currentLockOnIndicator, playerScene);
+                Debug.Log($"Lock-on indicator assigned to scene: {playerScene.name}");
+            }
+
             currentLockOnIndicator.SetActive(false);
         }
 

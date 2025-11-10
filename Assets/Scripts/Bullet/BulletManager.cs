@@ -1,5 +1,6 @@
 // Assets/Scripts/Bullet/BulletManager.cs
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BulletManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class BulletManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -34,10 +36,21 @@ public class BulletManager : MonoBehaviour
     {
         GameObject bulletObj = Instantiate(bulletPrefab, position, Quaternion.identity);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
-        
+
         if (bullet == null)
         {
             bullet = bulletObj.AddComponent<Bullet>();
+        }
+        
+        Scene currentLevelScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);  // Get last loaded scene (current level)
+        if (currentLevelScene.IsValid())
+        {
+            SceneManager.MoveGameObjectToScene(bulletObj, currentLevelScene);
+            Debug.Log($"Bullet spawned in scene: {currentLevelScene.name}");
+        }
+        else
+        {
+            Debug.LogWarning("Could not assign bullet to current level scene");
         }
         
         // 為子彈添加所有行為
