@@ -1,3 +1,4 @@
+// Assets/Scripts/Data/SaveData.cs
 [System.Serializable]
 public class SaveData
 {

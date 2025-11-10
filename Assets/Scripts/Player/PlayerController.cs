@@ -1,4 +1,4 @@
-// PlayerController.cs
+// Assets/Scripts/Level/Player/PlayerController.cs
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour

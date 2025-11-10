@@ -1,4 +1,4 @@
-//PlayerTeleport.cs
+// Assets/Scripts/Level/Player/PlayerTeleport.cs
 using UnityEngine;
 using System.Collections.Generic;
 

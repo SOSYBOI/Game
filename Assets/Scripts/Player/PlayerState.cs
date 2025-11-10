@@ -1,4 +1,4 @@
-// PlayerState.cs
+// Assets/Scripts/Level/Player/PlayerState.cs
 using UnityEngine;
 
 public class PlayerState : MonoBehaviour

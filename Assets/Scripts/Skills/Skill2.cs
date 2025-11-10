@@ -1,4 +1,4 @@
-// Skill2.cs
+// Assets/Scripts/Level/Skills/Skill2.cs
 using UnityEngine;
 
 public class Skill2 : BaseSkill

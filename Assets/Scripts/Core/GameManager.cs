@@ -1,4 +1,4 @@
-//GameManager.cs
+// Assets/Scripts/Core/GameManager.cs
 using UnityEngine;
 
 public class GameManager : MonoBehaviour

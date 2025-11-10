@@ -1,4 +1,4 @@
-// Skill1.cs (Skill2 3 4 are similar)
+// Assets/Scripts/Level/Skills/Skill1.cs (Skill2 3 4 are similar)
 using UnityEngine;
 
 public class Skill1 : BaseSkill

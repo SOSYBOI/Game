@@ -1,3 +1,4 @@
+// Assets/Scripts/Data/PlayerStats.cs
 [System.Serializable]
 public class PlayerStats
 {

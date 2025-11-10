@@ -1,4 +1,4 @@
-// PlayerMovement.cs
+// Assets/Scripts/Level/Player/PlayerMovement.cs
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour

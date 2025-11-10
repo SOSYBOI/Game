@@ -11,6 +11,7 @@ Assets/
 │   │   ├── GameManager.cs
 │   │   ├── EventManager.cs
 │   │   ├── InputManager.cs
+│   │   ├── GameStarter.cs
 │   ├── Player/
 │   │   ├── PlayerController.cs
 │   │   ├── PlayerMovement.cs
@@ -37,6 +38,11 @@ Assets/
 │   │   ├── Behaviors/
 │   │   │   ├── VirtualOrbitBehavior.cs
 │   │   │   └── (其他行為類別)
+│   ├── Level/
+│   │   ├── LevelManager.cs
+│   │   ├── PersistentStateManager.cs
+│   │   ├── InteractiveObject.cs
+│   │   ├── LevelExit.cs
 │   ├── Data/
 │   │   ├── PlayerStats.cs
 │   │   ├── PersistentState.cs
@@ -46,6 +52,21 @@ Assets/
 ├── Art/
 ├── UI/
 └── Plugins/
+```
+
+---
+
+## Build Settings 配置
+
+**重要：場景順序必須如下設定**
+
+```
+Scenes In Build:
+[0] Assets/Scenes/Bootstrap.unity      (無需任何指令碼)
+[1] Assets/Scenes/Persistent.unity     (包含所有核心管理器)
+[2] Assets/Scenes/Level_MainHall.unity (可卸載關卡)
+[3] Assets/Scenes/Level_TreasureRoom.unity (可卸載關卡)
+... (添加更多關卡)
 ```
 
 ---
@@ -1248,5 +1269,202 @@ UpdateState() → 狀態機
 - **可擴展** - 輕鬆添加新敵人類型或行為模式
 - **可視化調試** - Gizmos 顯示生成點與視野範圍
 - **事件驅動** - 敵人與其他系統通過事件通訊
+
+---
+
+## 關卡與場景系統
+
+### 場景架構
+
+```
+Bootstrap (Index 0) - 永不卸載，空場景
+    ↓
+Persistent (Index 1) - 遊戲進行中持久化
+    ├─ GameManager
+    ├─ PersistentStateManager
+    ├─ LevelManager
+    ├─ EnemyManager
+    ├─ BulletManager
+    ├─ Player (玩家)
+    └─ Camera (鏡頭)
+        ↓
+        ↓ (LevelManager 控制)
+        ↓
+Level1 (Index 2) - 可卸載
+Level2 (Index 3) - 可卸載
+... (更多關卡)
+```
+
+---
+
+### PersistentStateManager：永久世界狀態
+
+**責任：** 追蹤整個遊戲世界的永久改變
+
+```csharp
+// 布林狀態（門是否開啟）
+PersistentStateManager.Instance.SetBoolState("Door_MainHall_Opened", true);
+bool isOpen = PersistentStateManager.Instance.GetBoolState("Door_MainHall_Opened");
+
+// 整數狀態（敵人數量）
+PersistentStateManager.Instance.IncrementIntState("EnemiesDefeated");
+int count = PersistentStateManager.Instance.GetIntState("EnemiesDefeated");
+
+// 浮點數狀態
+PersistentStateManager.Instance.SetFloatState("BossHealth", 50f);
+
+// 字串狀態
+PersistentStateManager.Instance.SetStringState("PlayerName", "Hero");
+
+// 檢查狀態是否存在
+if (PersistentStateManager.Instance.HasState("Door_MainHall_Opened"))
+{
+    // ...
+}
+```
+
+**狀態鍵命名約定：**
+```
+{ObjectType}_{LevelName}_{ObjectName}_{Property}
+
+例如：
+"Door_MainHall_GoldenGate_Opened"
+"Puzzle_TreasureRoom_LeverA_Activated"
+"Boss_CastleTop_Dragon_Defeated"
+```
+
+**觸發的事件：**
+- `OnStateChanged_{stateKey}` - 當狀態改變時
+
+---
+
+### LevelManager：場景與關卡控制
+
+**責任：** 管理場景加載/卸載、玩家位置
+
+```csharp
+// 轉移至新關卡
+Vector3 spawnPosition = new Vector3(5, 1, 0);
+LevelManager.Instance.TransitionToLevel("Level_TreasureRoom", spawnPosition);
+
+// 查詢當前關卡
+string currentLevel = LevelManager.Instance.GetCurrentLevelName();
+
+// 檢查是否正在轉換
+if (LevelManager.Instance.IsTransitioning())
+{
+    // 禁止重複轉換
+}
+
+// 取得玩家生成位置
+Vector3 pos = LevelManager.Instance.GetPlayerSpawnPosition();
+```
+
+**場景轉換流程：**
+
+```
+玩家進入出口
+    ↓
+卸載前一個關卡（禁用 CharacterController）
+    ↓
+加載新關卡（Additive 模式）
+    ↓
+等待場景完全初始化
+    ↓
+恢復永久狀態（已開啟的門等）
+    ↓
+禁用 CharacterController → 設定玩家位置 → 重新啟用
+    ↓
+重新掃描敵人並重生（規則敵人重生，Boss 不重生）
+    ↓
+觸發 OnLevelLoaded 事件
+```
+
+---
+
+### InteractiveObject：可交互物件基類
+
+**責任：** 管理改變永久狀態的物件
+
+```csharp
+public abstract class InteractiveObject : MonoBehaviour
+{
+    protected string stateKey;  // 唯一狀態鍵
+    
+    public virtual void Activate();
+    public virtual void Deactivate();
+    public virtual void RestoreState();  // 關卡加載時調用
+    protected abstract void OnStateChanged(bool isActive);
+}
+```
+
+**Door 派生類範例：**
+
+```csharp
+public class Door : InteractiveObject
+{
+    protected override void OnStateChanged(bool isOpen)
+    {
+        // 打開時禁用碰撞體，移動門
+        objectCollider.enabled = !isOpen;
+        // 動畫移動門到位置
+    }
+}
+```
+
+**Ladder 派生類範例：**
+
+```csharp
+public class Ladder : InteractiveObject
+{
+    protected override void OnStateChanged(bool isAvailable)
+    {
+        // 梯子可用 = 啟用，不可用 = 停用
+        gameObject.SetActive(isAvailable);
+    }
+}
+```
+
+---
+
+### LevelExit：關卡出口
+
+**責任：** 定義關卡間的轉移點
+
+```csharp
+public class LevelExit : MonoBehaviour
+{
+    public string targetLevelName;           // 目標關卡名稱
+    public Vector3 playerSpawnOffset;        // 玩家進入位置偏移
+    public bool showDebugInfo = true;
+}
+```
+
+---
+
+### GameStarter：遊戲啟動腳本
+
+**責任：** Bootstrap 場景中加載 Persistent 和第一個關卡
+
+```csharp
+public class GameStarter : MonoBehaviour
+{
+    public string persistentSceneName = "Persistent";
+    public string firstLevelName = "Level_MainHall";
+    public Vector3 firstLevelSpawnPosition = Vector3.zero;
+    
+    // Start() 時：
+    // 1. 加載 Persistent 場景（Additive）
+    // 2. 等待管理器初始化
+    // 3. 加載第一個關卡
+}
+```
+
+**使用方式：**
+
+1. 在 Bootstrap 場景中創建空 GameObject
+2. 附加 GameStarter 指令碼
+3. 在 Inspector 設定關卡名稱和生成位置
+4. 播放遊戲
 
 ---

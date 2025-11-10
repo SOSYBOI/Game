@@ -1,4 +1,4 @@
-// InputManager.cs
+// Assets/Scripts/Core/InputManager.cs
 using UnityEngine;
 
 public static class InputManager

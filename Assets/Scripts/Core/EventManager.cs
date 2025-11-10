@@ -1,4 +1,4 @@
-//EventManager.cs
+// Assets/Scripts/Core/EventManager.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,4 +1,4 @@
-// SkillSystem.cs
+// Assets/Scripts/Level/Skills/SkillSystem.cs
 using UnityEngine;
 
 public class SkillSystem : MonoBehaviour

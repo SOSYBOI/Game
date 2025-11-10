@@ -1,4 +1,4 @@
-// CooldownSystem.cs
+// Assets/Scripts/Level/Skills/CooldownSystem.cs
 using UnityEngine;
 
 public class CooldownSystem : MonoBehaviour

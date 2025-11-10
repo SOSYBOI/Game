@@ -1,4 +1,4 @@
-// PlayerCombat.cs
+// Assets/Scripts/Level/Player/PlayerCombat.cs
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour

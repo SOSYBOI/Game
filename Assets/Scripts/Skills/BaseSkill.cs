@@ -1,4 +1,4 @@
-// BaseSkill.cs
+// Assets/Scripts/Level/Skills/BaseSkill.cs
 using UnityEngine;
 
 [System.Serializable]
