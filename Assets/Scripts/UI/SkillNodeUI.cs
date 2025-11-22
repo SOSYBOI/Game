@@ -24,7 +24,7 @@ public class SkillNodeUI : MonoBehaviour
         if (_skillNode.Unlockable) { 
             _skillImage.color = new Color(_skillImage.color.r, _skillImage.color.g, _skillImage.color.b, 1.0f);
             _skillNode.ApplyUpgrade();
-
+            SkillTreeManager.OnSkillUpgrade.Invoke(this);
         }
     }
     public void UpdateUpgrade()
