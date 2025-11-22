@@ -21,8 +21,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.onGamePaused += ShowPauseMenu;
-        GameManager.onGameResumed += ShowPauseMenu;
-        continueButton.onClick.AddListener(()=>GameManager.onGameResumed.Invoke());
+        GameManager.onGameResumed += HidePauseMenu;
+        continueButton.onClick.AddListener(()=>GameManager.onGameResumed?.Invoke());
         if(CooldownSystem.Instance != null)
         {
             int skillCount = CooldownSystem.Instance.GetSkillCount();
@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
             Debug.LogError("CooldownSystem Instance is null");
         }
 
+        if(GameManager.Instance.CurrentState != GameManager.GameState.Paused)HidePauseMenu();
 
     }
 
