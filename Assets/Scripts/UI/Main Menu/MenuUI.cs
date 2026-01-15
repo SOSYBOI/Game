@@ -15,8 +15,6 @@ public enum Command
 
 public class MenuUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
 {
-    private static float delay = 1.5f;
-
     private static float duration = 3f;
 
     [SerializeField]

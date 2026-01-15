@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UISelector : MonoBehaviour
 {
     [SerializeField]
-    private MenuUI[] uis; 
+    private MenuUI[] uis;
+
+    private int currentIndex = 0;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (uis.Length < 2)
         {
@@ -22,17 +25,62 @@ public class UISelector : MonoBehaviour
         uis[0].Highlight();
     }
 
-    public void UIHover(MenuUI UI)
+    private void Update()
     {
-        foreach (MenuUI ui in uis)
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if(ui != UI)
+            if (currentIndex == 0)
             {
-                ui.UnHighlight();
+                currentIndex = uis.Length - 1;
             }
             else
             {
-                ui.Highlight();
+                currentIndex--;
+            }
+            UIHover();
+        }
+        else if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentIndex == uis.Length-1)
+            {
+                currentIndex = 0;
+            }
+            else
+            {
+                currentIndex++;
+            }
+
+            UIHover();
+        }
+    }
+
+    private void UIHover()
+    {
+        for (int i = 0; i < uis.Length; i++)
+        {
+            if (i != currentIndex)
+            {
+                uis[i].UnHighlight();
+            }
+            else
+            {
+                uis[i].Highlight();
+            }
+        }
+    }
+
+    public void UIHover(MenuUI UI)
+    {
+        for (int i = 0; i < uis.Length; i++)
+        {
+            if (uis[i] != UI)
+            {
+                uis[i].UnHighlight();
+            }
+            else
+            {
+                currentIndex = i;
+                uis[i].Highlight();
             }
         }
     }
