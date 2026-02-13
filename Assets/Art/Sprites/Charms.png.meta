@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3e9d89bc97dfe8f4ab6b8c7c0fd9827d
+guid: 4df8b295093ec5342bbf4fcc3824d606
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FYP Game Border Test 2_0
+      name: Charms_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 161
-        width: 416
-        height: 26
+        y: 2
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,104 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d69d64876130adc40bafdbf312202a38
-      internalID: 1067885030
+      spriteID: 56e3266d864f4874da1c764da62e830c
+      internalID: 1435577170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FYP Game Border Test 2_1
+      name: Charms_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 129
-        width: 416
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a3a6408a40beb944caee64722233b0ea
-      internalID: 1885339528
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 2_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 97
-        width: 416
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2da4d01fadec00d429295036d5434e7b
-      internalID: -2005118745
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 2_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 65
-        width: 416
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ddd01e5fab9b78d4da0ec0115af159e0
-      internalID: 2014987815
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 2_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 33
-        width: 416
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: af1905fb6f390f144bd17ec32fe8bd1a
-      internalID: 61795378
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 2_5
-      rect:
-        serializedVersion: 2
-        x: 0
+        x: 16
         y: 0
-        width: 416
-        height: 8
+        width: 15
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +132,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f91f54fb211f38459de08928a3d8f21
-      internalID: 1967523804
+      spriteID: 8004a7a3c7c15ef44ba64228ce25715b
+      internalID: -1648147684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Charms_2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 0
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 519e4b47d2b848f43a275d8fc9c4411e
+      internalID: -1417393281
       vertices: []
       indices: 
       edges: []
@@ -225,7 +162,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 59bf35dee66b00042a64ce2297dd587c
+    spriteID: 3cecb11a765a27a4491754eeb8ba349e
     internalID: 0
     vertices: []
     indices: 
@@ -233,12 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      FYP Game Border Test 2_0: 1067885030
-      FYP Game Border Test 2_1: 1885339528
-      FYP Game Border Test 2_2: -2005118745
-      FYP Game Border Test 2_3: 2014987815
-      FYP Game Border Test 2_4: 61795378
-      FYP Game Border Test 2_5: 1967523804
+      Charms_0: 1435577170
+      Charms_1: -1648147684
+      Charms_2: -1417393281
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

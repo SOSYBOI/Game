@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dab36e12efc99aa4c80772e33531e2f3
+guid: ba552db4ce1907b46ab0b7d46b654aac
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tabs_0
+      name: FYP SKill Nodes UI_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 225
-        width: 480
-        height: 26
+        x: 58
+        y: 45
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,146 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24a1de14774d0bb45bf1af6c9ff0f048
-      internalID: 197134773
+      spriteID: b91a4afe14502c04ebe5d0e1811d6f78
+      internalID: 1432977344
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tabs_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 193
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0aca38f2c75638c4e9db84e95eb2af45
-      internalID: -596819857
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 161
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d338a19d1674be3488d4c0cef7e8d641
-      internalID: 1932414383
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 129
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9e4dceda64aa55246a7f13cfcfa206fb
-      internalID: 1206136289
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 97
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ecd67f7f583493d46a407d99ae65ecbc
-      internalID: -1069645609
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 65
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 99eb8a67917b9ea4e8d848a9459856c0
-      internalID: -357998866
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 33
-        width: 480
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e612953bc94580a4aacad433b732bbaf
-      internalID: 1448489843
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_7
+      name: FYP SKill Nodes UI_1
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 480
-        height: 8
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -258,8 +132,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4277e3f96251374291eb910226249c5
-      internalID: 827493742
+      spriteID: ce1c4f6ec64cae342ad3ef607437c497
+      internalID: -1418724339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FYP SKill Nodes UI_2
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37fe0ed4a2a6bad4c9617453b8d7c726
+      internalID: -397600630
       vertices: []
       indices: 
       edges: []
@@ -267,7 +162,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c2481880de4a5b7459502d950af2ec78
+    spriteID: f9caa88d4e86b4e4b97db87ec4c77e64
     internalID: 0
     vertices: []
     indices: 
@@ -275,14 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tabs_0: 197134773
-      Tabs_1: -596819857
-      Tabs_2: 1932414383
-      Tabs_3: 1206136289
-      Tabs_4: -1069645609
-      Tabs_5: -357998866
-      Tabs_6: 1448489843
-      Tabs_7: 827493742
+      FYP SKill Nodes UI_0: 1432977344
+      FYP SKill Nodes UI_1: -1418724339
+      FYP SKill Nodes UI_2: -397600630
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
