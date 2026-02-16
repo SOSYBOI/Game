@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c902ada1264a9704db33af83f86e05c3
+guid: f3b27606f7f4110409d90f8ab841aa9a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,106 +97,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FYP Game Border Test 3_0
+      name: TabBorder_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 193
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b89ece374748e1c45babf9aa2447771e
+      internalID: -1788947136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 161
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 753de045b382f524389913e4a4d4663b
+      internalID: -472509891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 129
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73410e016f8ba59439192e5fafa25644
+      internalID: -1704863752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 98
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83ebf2bdc3b7f6346aa7db8c3973f56d
+      internalID: 1293118489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 65
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eed46fd31698864d95af1e7b4518d80
+      internalID: -936111648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 33
+        width: 448
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b25abee379c51e48bdbf758854092d7
+      internalID: -1735443868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TabBorder_6
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
-        height: 20
+        width: 448
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96689947718386d47b0ffdfcc2660d8a
-      internalID: 302390053
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 3_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 24
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94b691d6e73c36d409a69779b7b9d823
-      internalID: 1516727720
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 3_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 24
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 069a96c0e470ab4499bd3ea735e6c3d9
-      internalID: -1254933296
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 3_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 24
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a39e40f9f9b71894eb4174a04c5b21a5
-      internalID: 373130255
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FYP Game Border Test 3_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 24
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6f7775fe9976ea348826be7bdece2e35
-      internalID: 1991927930
+      spriteID: c52b492d26a0d0a46a061023841f3276
+      internalID: 722077400
       vertices: []
       indices: 
       edges: []
@@ -204,7 +246,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6117411b87b6fa74a94f56795b54d553
+    spriteID: 327088464507d974f92782e97f4042f7
     internalID: 0
     vertices: []
     indices: 
@@ -212,11 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      FYP Game Border Test 3_0: 302390053
-      FYP Game Border Test 3_1: 1516727720
-      FYP Game Border Test 3_2: -1254933296
-      FYP Game Border Test 3_3: 373130255
-      FYP Game Border Test 3_4: 1991927930
+      TabBorder_0: -1788947136
+      TabBorder_1: -472509891
+      TabBorder_2: -1704863752
+      TabBorder_3: 1293118489
+      TabBorder_4: -936111648
+      TabBorder_5: -1735443868
+      TabBorder_6: 722077400
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
