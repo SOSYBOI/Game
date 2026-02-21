@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4449a26ed7498c34285d8994fee2cb32, type: 3}
+  m_Name: Gem
+  m_EditorClassIdentifier: 
+  itemName: Gem
+  itemSprite: {fileID: 655907315, guid: 82fb946017250bd48ab1e110e91c70a6, type: 3}
+  itemDescription: Shiny and Priceful.
+  itemID: 4
+  unlocked: 1

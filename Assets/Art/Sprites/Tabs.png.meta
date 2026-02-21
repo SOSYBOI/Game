@@ -101,8 +101,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 225
-        width: 480
+        y: 193
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -122,8 +122,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 193
-        width: 480
+        y: 161
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -143,8 +143,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 161
-        width: 480
+        y: 129
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -164,8 +164,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 129
-        width: 480
+        y: 97
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -185,8 +185,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 97
-        width: 480
+        y: 65
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -206,8 +206,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 65
-        width: 480
+        y: 33
+        width: 448
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -227,9 +227,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 33
-        width: 480
-        height: 26
+        y: 0
+        width: 448
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -239,27 +239,6 @@ TextureImporter:
       bones: []
       spriteID: e612953bc94580a4aacad433b732bbaf
       internalID: 1448489843
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tabs_7
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 480
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b4277e3f96251374291eb910226249c5
-      internalID: 827493742
       vertices: []
       indices: 
       edges: []
@@ -282,7 +261,6 @@ TextureImporter:
       Tabs_4: -1069645609
       Tabs_5: -357998866
       Tabs_6: 1448489843
-      Tabs_7: 827493742
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
