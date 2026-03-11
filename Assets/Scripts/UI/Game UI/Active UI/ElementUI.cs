@@ -8,9 +8,6 @@ public class ElementUI : MonoBehaviour
     [SerializeField]
     private Image barImage;
 
-    [SerializeField]
-    private float originalWidth;
-
     public void ResetUI()
     {
         barImage.fillAmount = 1;

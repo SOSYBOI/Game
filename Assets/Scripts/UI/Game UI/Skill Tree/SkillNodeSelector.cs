@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillNodeSelector : MonoBehaviour
@@ -11,8 +13,13 @@ public class SkillNodeSelector : MonoBehaviour
 
     [SerializeField]
     private List<SkillNodeUI> skillNodes;
+
+    [SerializeField]
+    private SkillDescriptor skillDescriptor;
+    
     private SkillNodeUI currentNode;
 
+    private bool descriptorOn = false;
 
 
     private void Awake()
@@ -23,8 +30,17 @@ public class SkillNodeSelector : MonoBehaviour
             return;
         }
         currentNode = parentSkillNodeUI;
-        InitializeNodes(parentSkillNodeUI);
+        for (int i = 0; i < skillNodes.Count; i++)
+        {
+            Debug.Log($"Skill Node {i}:");
+            Debug.Log(skillNodes[i] == null);
+        }
         UIHover();
+    }
+
+    private void Start()
+    {
+        skillDescriptor.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -39,13 +55,27 @@ public class SkillNodeSelector : MonoBehaviour
                 
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (!descriptorOn)
+            {
+                skillDescriptor.gameObject.SetActive(true);
+                descriptorOn = true;
+            }
+            else
+            {
+                skillDescriptor.gameObject.SetActive(false);
+                descriptorOn = false;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if(currentIndex > 0)
             {
                 currentIndex--;
                 currentNode = skillNodes[currentIndex];
-                Debug.Log($"Current Index: {currentIndex}");
+                //Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 
@@ -56,7 +86,7 @@ public class SkillNodeSelector : MonoBehaviour
             {
                 currentIndex++;
                 currentNode = skillNodes[currentIndex];
-                Debug.Log($"Current Index: {currentIndex}");
+                //Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 
@@ -68,7 +98,7 @@ public class SkillNodeSelector : MonoBehaviour
             {
                 currentNode = currentNode.SkillNode.ParentNode;
                 currentIndex = skillNodes.IndexOf(currentNode);
-                Debug.Log($"Current Index: {currentIndex}");
+                //Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 
@@ -80,25 +110,12 @@ public class SkillNodeSelector : MonoBehaviour
             {
                 currentNode = currentNode.SkillNode.Children[0];
                 currentIndex = skillNodes.IndexOf(currentNode);
-                Debug.Log($"Current Index: {currentIndex}");
+                //Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 
 
         }
-    }
-
-    private void InitializeNodes(SkillNodeUI currentParentNode)
-    {
-
-        if (currentParentNode == null || currentParentNode.SkillNode == null) return;
-        if(currentParentNode.SkillNode.Children.Count == 0) return;
-
-        for(int i = 0;i<currentParentNode.SkillNode.Children.Count; i++)
-        {
-            InitializeNodes(currentParentNode.SkillNode.Children[i]);
-        }
-
     }
 
 
@@ -108,13 +125,31 @@ public class SkillNodeSelector : MonoBehaviour
         {
             if (i != currentIndex)
             {
+                Debug.Log(i);
+                Debug.Log(skillNodes[i] == null);
                 skillNodes[i].UnHighlight();
             }
             else
             {
-                //Debug.Log(i);
+                Debug.Log(i);
                 skillNodes[i].Highlight();
             }
+        }
+
+        if (currentNode == null) return;
+
+        if (currentNode.SkillNode != null)
+        {
+            skillDescriptor.SetDescription(
+                currentNode.SkillNode.SkillData.UpgradeName,
+                currentNode.SkillNode.SkillData.Value,
+                currentNode.SkillNode.SkillData.Description,
+                currentNode.SkillNode.SkillData.UpgradeSprite
+            );
+        }
+        else
+        {
+            skillDescriptor.ResetDescription();
         }
     }
 
@@ -133,6 +168,22 @@ public class SkillNodeSelector : MonoBehaviour
                 skillNodes[i].Highlight();
             }
         }
+
+        if (currentNode == null) return;
+        if (currentNode.SkillNode != null)
+        {
+            skillDescriptor.SetDescription(
+                currentNode.SkillNode.SkillData.UpgradeName,
+                currentNode.SkillNode.SkillData.Value,
+                currentNode.SkillNode.SkillData.Description,
+                currentNode.SkillNode.SkillData.UpgradeSprite
+            );
+        }
+        else
+        {
+            skillDescriptor.ResetDescription();
+        }
+
     }
 
     

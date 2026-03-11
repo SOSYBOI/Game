@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// 
 /// Leaves of the tree does NOT have any children. (i.e. _skillNode.children.Count = 0)
 /// </summary>
-public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
+public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private Image _skillBorder;
@@ -40,20 +40,31 @@ public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     [SerializeField]
     private Color[] _linkColor;
 
+    [SerializeField]
+    private Image skillIcon;
+
     private SkillNodeSelector _parentSelector;
 
     public SkillNode SkillNode => _skillNode;
     // Start is called before the first frame update
     private void Start()
     {
-        if(!_skillNode.Unlockable)
+        if(_skillNode.SkillData == null)
+        {
+            Debug.LogError("Skill Data cannot be null.");
+            return;
+        }
+
+        skillIcon.sprite = _skillNode.SkillData.UpgradeSprite;
+
+        if(!_skillNode.SkillData.Unlockable)
         {
             for (int i = 0; i < _upgradeLinkImages.Count; i++)
             {
                 _upgradeLinkImages[i].color = _linkColor[0];
             }
         }
-        else if(_skillNode.IsLocked)
+        else if(_skillNode.SkillData.IsLocked)
         {
             for (int i = 0; i < _upgradeLinkImages.Count; i++)
             {
@@ -73,7 +84,7 @@ public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void Upgrade()
     {
-        if (_skillNode.Unlockable) { 
+        if (_skillNode.SkillData.Unlockable) { 
             _skillNode.ApplyUpgrade();
             SkillTreeManager.OnSkillUpgrade.Invoke(this);
             for (int i = 0; i < _upgradeLinkImages.Count; i++)
@@ -84,7 +95,7 @@ public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     }
     public void UpdateUpgrade()
     {
-        if (_skillNode.IsLocked && _skillNode.Unlockable) {
+        if (_skillNode.SkillData.IsLocked && _skillNode.SkillData.Unlockable) {
             _skillBorder.sprite = _borderSprites[2];
             for (int i = 0; i < _upgradeLinkImages.Count; i++)
             {
@@ -101,8 +112,13 @@ public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Debug.Log("Hovering");
+        ToolTipSystem.Instance.OnToolTipSelected(this);
         _parentSelector?.UIHover(this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ToolTipSystem.Instance.CloseToolTip();
     }
 
     public void Highlight()
@@ -112,11 +128,11 @@ public class SkillNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void UnHighlight()
     {
-        if (!_skillNode.Unlockable)
+        if (!_skillNode.SkillData.Unlockable)
         {
             _skillBorder.sprite = _borderSprites[3];
         }
-        else if (_skillNode.IsLocked)
+        else if (_skillNode.SkillData.IsLocked)
         {
             _skillBorder.sprite = _borderSprites[2];
         }

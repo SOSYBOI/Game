@@ -5,26 +5,24 @@ using UnityEngine;
 [System.Serializable]
 public class SkillNode
 {
-    public string name;
-    public string UpgradeType; //This needs to be changed in the future.
-    public SkillType SkillType = SkillType.FIREBALL;
-    [SerializeField]private float value; 
-    [SerializeField]private bool locked = true;
-    [SerializeField]private bool unlockable = false;
-    [SerializeField] private SkillNodeUI parentNode;
+    [SerializeField]private SkillUpgradeData _skillData;
+    [SerializeField]private SkillNodeUI parentNode;
     [SerializeField]private List<SkillNodeUI> children;
 
-    public bool IsLocked => locked;
-    public bool Unlockable => unlockable;
-    public float Value => value;
 
+    public SkillUpgradeData SkillData => _skillData;
     public SkillNodeUI ParentNode => parentNode;
     public List<SkillNodeUI> Children => children;
     public void ApplyUpgrade()
     {
-        if (!locked) Debug.Log("Skill has already been upgraded");
-        locked = false;
-        if (unlockable && !locked)
+        if (!_skillData.IsLocked)
+        {
+            Debug.Log("Skill has already been upgraded");
+            return;
+        }
+
+        _skillData.SetLocked(false);
+        if (_skillData.Unlockable && !_skillData.IsLocked)
         {
             foreach (SkillNodeUI nodeUI in children)
             {
@@ -36,7 +34,7 @@ public class SkillNode
 
     private void SetUnlockable(bool unlockable)
     {
-        this.unlockable = unlockable;
+        //this.unlockable = unlockable;
     }
 
 }

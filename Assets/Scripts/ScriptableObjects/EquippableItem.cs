@@ -11,7 +11,7 @@ public enum EquipmentType {
 }
 
 [CreateAssetMenu(fileName = "EquippableItem", menuName = "Item/New EquippableItem")]
-public class EquippableItem : Item
+public class EquippableItem : ItemData
 {
     [SerializeField]
     private EquipmentType equipmentType;

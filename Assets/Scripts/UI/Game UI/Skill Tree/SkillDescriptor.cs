@@ -11,22 +11,25 @@ public class SkillDescriptor : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI skillName;
     [SerializeField]
-    private TextMeshProUGUI charmCost;
+    private TextMeshProUGUI skillCost;
     [SerializeField]
     private TextMeshProUGUI skillDescription;
 
-    public void SetDescription(string name, string cost, string desc, Sprite charmSprite)
+    public void SetDescription(string name, float cost, string desc, Sprite skillSprite)
     {
         skillImage.gameObject.SetActive(true);
-        skillName.text = name;
-        skillDescription.text = desc;
-        skillImage.sprite = charmSprite;
+        skillName.text = "Upgrade name: "+name;
+        skillCost.text = "Skill Cost: "+cost.ToString();
+        skillDescription.text = "Description: "+desc;
+        skillImage.sprite = skillSprite;
+        skillImage.preserveAspect = true;
     }
 
     public void ResetDescription()
     {
-        skillName.text = "";
-        skillDescription.text = "";
+        skillName.text = "Upgrade name: ";
+        skillCost.text = "Skill Cost: ";
+        skillDescription.text = "Description: ";
         skillImage.sprite = null;
         skillImage.gameObject.SetActive(false);
     }

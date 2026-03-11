@@ -63,6 +63,8 @@ public class SkillTabSystem : MonoBehaviour
     void OpenPanel(int index)
     {
         tabButtons[index].OnSelect();
+        Debug.Log("Panel");
+        Debug.Log(tabPanels[index] == null);
         tabPanels[index].gameObject.SetActive(true);
     }
 

@@ -1,20 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PotionUI : MonoBehaviour
 {
+    /// <summary>
+    /// potionSprites[0]: Full Potion
+    /// potionSprites[1]: 2/3 Potion
+    /// potionSprites[2]: 1/3 Potion
+    /// potionSprites[3]: Empty Potion
+    /// </summary>
     [SerializeField]
     private Sprite[] potionSprites;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Image potionImage;
+    private int count = 0;
+
+    public void OnUsedPotion()
     {
-        
+        count++;
+        potionImage.sprite = potionSprites[count];
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ResetPotion()
     {
-        
+        count = 0;
+        potionImage.sprite = potionSprites[0];
     }
 }

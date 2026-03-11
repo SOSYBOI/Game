@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3088586480563061221}
   - component: {fileID: 1437966307034605857}
   m_Layer: 5
-  m_Name: Attribute
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 38.5, y: 88}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3088586480563061221
 CanvasRenderer:
@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -2064765316, guid: b0a27571fcbaa65428fbf7f284750fe6, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -295,12 +295,7 @@ MonoBehaviour:
   - {fileID: 505272912, guid: ba552db4ce1907b46ab0b7d46b654aac, type: 3}
   - {fileID: -397600630, guid: ba552db4ce1907b46ab0b7d46b654aac, type: 3}
   _skillNode:
-    name: 
-    UpgradeType: 
-    SkillType: 0
-    value: 0
-    locked: 1
-    unlockable: 0
+    _skillData: {fileID: 11400000, guid: d335b70b3bb0e8b42b2eb742c6c3cf3e, type: 2}
     parentNode: {fileID: 0}
     children: []
   _upgradeLinkImages:
@@ -311,6 +306,7 @@ MonoBehaviour:
   - {r: 0.20392157, g: 0.32156864, b: 0.36078432, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.6745098, g: 0.38039216, b: 0.16470589, a: 1}
+  skillIcon: {fileID: 1437966307034605857}
 --- !u!114 &6054025367355000785
 MonoBehaviour:
   m_ObjectHideFlags: 0

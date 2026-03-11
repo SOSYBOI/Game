@@ -10,7 +10,7 @@ public enum ItemType
 }
 
 [CreateAssetMenu(fileName="Item",menuName = "Item/New Item")]
-public class Item : ScriptableObject
+public class ItemData : ScriptableObject
 {
     [SerializeField]
     private string itemName;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUIManager : MonoBehaviour
+public class ActiveGameUIManager : MonoBehaviour
 {
     [SerializeField]
     private List<SkillActiveUI> skillUIList;

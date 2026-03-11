@@ -10,7 +10,7 @@ public class ItemSlotUI : SelectionUI
     [SerializeField]
     private Image itemImage;
     [SerializeField]
-    private Item item;
+    private ItemData item;
 
     /// <summary>
     /// There are three types of borders/slots.
@@ -23,7 +23,7 @@ public class ItemSlotUI : SelectionUI
     [SerializeField]
     private bool equipped = false;
 
-    public Item Item => item;
+    public ItemData Item => item;
     public bool Equipped => equipped;
 
     protected override void Start()

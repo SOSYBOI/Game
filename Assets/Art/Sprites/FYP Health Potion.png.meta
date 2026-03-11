@@ -132,8 +132,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37c3f042dd2137e40b84bf6725f0fdc0
-      internalID: 2145855832
+      spriteID: 0568b49641da8be4cac78a477bc132c8
+      internalID: -1741187057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FYP Health Potion_2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 24
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 005ea46a2b8fa0e47ab3cd42d34d7bd0
+      internalID: 796103284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FYP Health Potion_3
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 24
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 679199d2421497a479de2bcb1af06e07
+      internalID: -768938784
       vertices: []
       indices: 
       edges: []
@@ -150,7 +192,9 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       FYP Health Potion_0: -1041462339
-      FYP Health Potion_1: 2145855832
+      FYP Health Potion_1: -1741187057
+      FYP Health Potion_2: 796103284
+      FYP Health Potion_3: -768938784
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

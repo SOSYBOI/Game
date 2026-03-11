@@ -10,6 +10,13 @@ public class SkillActiveUI : MonoBehaviour
     [SerializeField]
     private Image _skillTimer;
 
+    /// <summary>
+    /// _skillSprites[0]: inactive sprite (not ready to use)
+    /// _skillSprites[1]: active sprite (ready to use)
+    /// </summary>
+    [SerializeField]
+    private Sprite[] _skillSprites;
+
     private BaseSkill _skill;
 
     // Start is called before the first frame update
@@ -29,8 +36,8 @@ public class SkillActiveUI : MonoBehaviour
         float time = _skill.CurrentCooldownPool;
         float totalDuration = _skill.MaxCooldownPool;
         _skillTimer.fillAmount = time/totalDuration;
-        if (!_skill.IsReady) _skillHolder.color = new Color(_skillHolder.color.r,_skillHolder.color.g,_skillHolder.color.b,0.5f);
-        else _skillHolder.color = new Color(_skillHolder.color.r, _skillHolder.color.g, _skillHolder.color.b, 1f);
+        if (!_skill.IsReady) _skillHolder.sprite = _skillSprites[0];
+        else _skillHolder.sprite = _skillSprites[1];
     }
 
     public void AssignSkill(BaseSkill skill)

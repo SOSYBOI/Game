@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d50a22a1780614419ee5917c8ab0c73, type: 3}
+  m_Name: Upgrade 1
+  m_EditorClassIdentifier: 
+  upgradeName: A
+  upgradeType: test
+  description: This is a description Test A
+  upgradeSprite: {fileID: -2064765316, guid: b0a27571fcbaa65428fbf7f284750fe6, type: 3}
+  skillType: 0
+  value: 0
+  locked: 1
+  unlockable: 0

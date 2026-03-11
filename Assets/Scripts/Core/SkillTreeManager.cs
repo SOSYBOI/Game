@@ -15,10 +15,10 @@ public class SkillTreeManager : MonoBehaviour
 
     private void UpdateSkill(SkillNodeUI nodeUI)
     {
-        int i = (int)nodeUI.SkillNode.SkillType;
+        int i = (int)nodeUI.SkillNode.SkillData.SkillType;
         BaseSkill skill = CooldownSystem.Instance.GetSkill(i);
-        SkillUpgradeManager.Instance.ApplyUpgrade(skill,nodeUI.SkillNode.UpgradeType,nodeUI.SkillNode.Value);
-        SkillUpgradeManager.Instance.RecordUpgrade(i, nodeUI.SkillNode.UpgradeType);
+        SkillUpgradeManager.Instance.ApplyUpgrade(skill,nodeUI.SkillNode.SkillData.UpgradeType,nodeUI.SkillNode.SkillData.Value);
+        SkillUpgradeManager.Instance.RecordUpgrade(i, nodeUI.SkillNode.SkillData.UpgradeType);
     }
 
 }

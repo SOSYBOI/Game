@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,7 +8,7 @@ using static UnityEditor.Progress;
 
 
 //This is used to show the Armor Inventory.
-public class EquipmentSlotUI : SelectionUI
+public class EquipmentSlotUI : SelectionUI, IPointerExitHandler
 {
     [SerializeField]
     private Image itemImage;
@@ -67,5 +68,16 @@ public class EquipmentSlotUI : SelectionUI
         itemImage.sprite = null;
         itemImage.gameObject.SetActive(false);
         equipped = false;
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        ToolTipSystem.Instance.OnToolTipSelected(this);
+        base.OnPointerEnter(eventData);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ToolTipSystem.Instance.CloseToolTip();
     }
 }
