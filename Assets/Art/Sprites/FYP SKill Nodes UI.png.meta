@@ -100,7 +100,7 @@ TextureImporter:
       name: FYP SKill Nodes UI_0
       rect:
         serializedVersion: 2
-        x: 58
+        x: 0
         y: 45
         width: 32
         height: 32
@@ -121,8 +121,8 @@ TextureImporter:
       name: FYP SKill Nodes UI_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 58
+        y: 45
         width: 32
         height: 32
       alignment: 0
@@ -142,7 +142,7 @@ TextureImporter:
       name: FYP SKill Nodes UI_2
       rect:
         serializedVersion: 2
-        x: 58
+        x: 0
         y: 0
         width: 32
         height: 32
@@ -155,6 +155,27 @@ TextureImporter:
       bones: []
       spriteID: 37fe0ed4a2a6bad4c9617453b8d7c726
       internalID: -397600630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FYP SKill Nodes UI_3
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0a8d507b376b2b4ca2c73b4ed4ee0bc
+      internalID: 505272912
       vertices: []
       indices: 
       edges: []
@@ -173,6 +194,7 @@ TextureImporter:
       FYP SKill Nodes UI_0: 1432977344
       FYP SKill Nodes UI_1: -1418724339
       FYP SKill Nodes UI_2: -397600630
+      FYP SKill Nodes UI_3: 505272912
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

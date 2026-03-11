@@ -7,10 +7,13 @@ public abstract class SelectorManager : MonoBehaviour
     [SerializeField]
     protected SelectionUI[] uis;
 
+    [SerializeField]
+    protected int columns=1;
+
     protected int currentIndex = 0;
 
     // Start is called before the first frame update
-    private void Start()
+    protected virtual void Start()
     {
         if (uis.Length < 2)
         {
@@ -26,7 +29,7 @@ public abstract class SelectorManager : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (currentIndex == 0)
             {
@@ -36,9 +39,10 @@ public abstract class SelectorManager : MonoBehaviour
             {
                 currentIndex--;
             }
+
             UIHover();
         }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             if (currentIndex == uis.Length - 1)
             {
@@ -50,6 +54,34 @@ public abstract class SelectorManager : MonoBehaviour
             }
 
             UIHover();
+
+        }else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (currentIndex < columns)
+            {
+                currentIndex = (uis.Length - columns + currentIndex );
+            }
+            else
+            {
+                currentIndex = currentIndex - columns;
+            }
+
+            UIHover();
+
+        }
+        else if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentIndex+columns >= uis.Length)
+            {
+                currentIndex = currentIndex+columns - uis.Length;
+            }
+            else
+            {
+                currentIndex = currentIndex + columns;
+            }
+
+            UIHover();
+
         }
     }
 

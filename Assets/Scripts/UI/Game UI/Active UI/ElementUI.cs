@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ElementUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Image barImage;
+
+    [SerializeField]
+    private float originalWidth;
+
+    public void ResetUI()
     {
-        
+        barImage.fillAmount = 1;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateBar(int remain,int total)
     {
-        
+        barImage.fillAmount = ((float)remain/ total);
     }
 }

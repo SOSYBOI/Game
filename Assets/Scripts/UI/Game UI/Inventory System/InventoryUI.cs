@@ -7,6 +7,50 @@ public class InventoryUI : SelectorManager
     [SerializeField]
     private ItemDescriptor itemDescriptor;
 
+    protected override void Start()
+    {
+        EquipmentManager.OnEquipmentUnequipped += UnequipItem;
+        EquipmentManager.OnEquipmentSwapped += UnequipItem;
+        base.Start();
+        UIHover();
+    }
+
+    protected override void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            var slotUI = uis[currentIndex] as ItemSlotUI;
+            if (slotUI == null)
+            {
+                Debug.LogError("The Inventory must only have ItemSlotUI as child");
+            }
+
+            var equippableItem = slotUI.Item as EquippableItem;
+
+            if (equippableItem != null)
+            {
+                //Equip Item
+                if (!slotUI.Equipped)
+                {
+                    Debug.Log("Equipping Item");
+                    EquipmentManager.OnEquipmentEquipped.Invoke(equippableItem);
+                    slotUI.SetEquipped(true);
+                }
+                else
+                {
+                    Debug.Log("Unequipping Item");
+                    EquipmentManager.OnEquipmentUnequipped.Invoke(equippableItem);
+                }
+
+            }
+
+            UIHover();
+        }
+        //Debug.Log($"Item Slot ID:{currentIndex}");
+        base.Update();
+    }
+
     public void OnItemUnselected()
     {
         itemDescriptor.gameObject.SetActive(false);
@@ -27,22 +71,32 @@ public class InventoryUI : SelectorManager
             }
         }
 
-        var slotUI = uis[currentIndex] as InventorySlotUI;
+        //Debug.Log($"Item Slot ID:{currentIndex}");
+
+        var slotUI = uis[currentIndex] as ItemSlotUI;
         if (slotUI == null)
         {
             Debug.LogError("The child must be InventorySlotUI");
             return;
         }
 
-        if (slotUI.Item == null || !slotUI.Item.Unlocked){ 
-            itemDescriptor.ResetDescription(); 
+        if (slotUI.Item == null)
+        {
+            itemDescriptor.ResetDescription();
         }
-        else if (slotUI.Item != null && slotUI.Item.Unlocked)
+        else if(!slotUI.Item.Unlocked){
+            bool equippable = slotUI.Item is EquippableItem;
+            itemDescriptor.ResetDescription(
+                                        slotUI.Item.ItemType,
+                                        slotUI.Item.Unlocked,
+                                        equippable
+                                        ); 
+        }
+        else if (slotUI.Item.Unlocked)
         {
             itemDescriptor.SetDescription(
-                                        slotUI.Item.ItemName,
-                                        slotUI.Item.ItemDescription,
-                                        slotUI.Item.ItemSprite
+                                        slotUI.Item,
+                                        slotUI.Equipped
                                         );
         }
         else
@@ -58,23 +112,48 @@ public class InventoryUI : SelectorManager
 
     public override void UIClicked(SelectionUI ui)
     {
-        var slotUI = ui as InventorySlotUI;
+        var slotUI = ui as ItemSlotUI;
         if (slotUI == null) { 
             Debug.LogError("The child must be InventorySlotUI");
             return;
         }
-        foreach (InventorySlotUI slot in uis)
+        foreach (ItemSlotUI slot in uis)
         {
             if (slotUI != slot) slot.UnHighlight();
             else slot.Highlight();
         }
 
-        if (slotUI.Item != null) { 
-            itemDescriptor.SetDescription(slotUI.Item.ItemName, slotUI.Item.ItemDescription, slotUI.Item.ItemSprite);
+        if (slotUI.Item != null) {
+            itemDescriptor.SetDescription(
+                                        slotUI.Item,
+                                        slotUI.Equipped
+                                        );
         }
-        else
+    }
+
+    private void UnequipItem(EquippableItem item)
+    {
+        for (int i = 0; i < uis.Length; i++)
         {
-            Debug.LogError("Slot selected but Item cannot be null.");
+            ItemSlotUI slotUI = uis[i] as ItemSlotUI;
+            if (slotUI != null)
+            {
+                EquippableItem eItem = slotUI.Item as EquippableItem;
+                if (eItem != null)
+                {
+                    if(eItem == item)
+                    {
+                        slotUI.SetEquipped(false);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                break;
+            }
         }
+
+        UIHover();
     }
 }

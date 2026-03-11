@@ -6,13 +6,12 @@ using UnityEngine.Events;
 public class SkillTreeManager : MonoBehaviour 
 {
     public static UnityAction<SkillNodeUI> OnSkillUpgrade; 
-    [SerializeField]
-    private List<SkillNodeUI> parentNodes;
 
     private void Awake()
     {
         OnSkillUpgrade += UpdateSkill;
     }
+
 
     private void UpdateSkill(SkillNodeUI nodeUI)
     {

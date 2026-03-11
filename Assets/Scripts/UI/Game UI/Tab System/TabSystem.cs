@@ -50,11 +50,13 @@ public class TabSystem : MonoBehaviour
         }
         tabImage.sprite = tabSprites[currentIndex];
         tabButtons[currentIndex].enabled = false;
+
+        //ToolTipSystem.Instance.CloseToolTip();
     }
 
     void SwitchPanel(int index)
     {
-        Debug.Log($"Button {index} pressed.");
+        //Debug.Log($"Button {index} pressed.");
         currentIndex = (byte)index;
         for (int i = 0; i < tabButtons.Length; i++)
         {
@@ -66,6 +68,8 @@ public class TabSystem : MonoBehaviour
         }
         tabImage.sprite = tabSprites[index];
         tabButtons[index].enabled = false;
+
+        //ToolTipSystem.Instance.CloseToolTip();
     }
 
     void OpenPanel(int index)

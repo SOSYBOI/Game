@@ -11,11 +11,15 @@ public class SkillNode
     [SerializeField]private float value; 
     [SerializeField]private bool locked = true;
     [SerializeField]private bool unlockable = false;
+    [SerializeField] private SkillNodeUI parentNode;
     [SerializeField]private List<SkillNodeUI> children;
 
     public bool IsLocked => locked;
     public bool Unlockable => unlockable;
     public float Value => value;
+
+    public SkillNodeUI ParentNode => parentNode;
+    public List<SkillNodeUI> Children => children;
     public void ApplyUpgrade()
     {
         if (!locked) Debug.Log("Skill has already been upgraded");

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameUIManager : MonoBehaviour
 {
     [SerializeField]
-    private List<SkillUI> skillUIList;
+    private List<SkillActiveUI> skillUIList;
     [SerializeField]
     private GameObject pauseMenu;
     [SerializeField]
