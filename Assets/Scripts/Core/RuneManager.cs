@@ -41,7 +41,7 @@ public class RuneManager : MonoBehaviour
         if (readMessageUI != null) readMessageUI.SetActive(false);
         if (openMessageUI != null) openMessageUI.SetActive(false);
 
-        LockCursor(true);
+        //LockCursor(true);
 
         // 监听输入框的回车键提交 (玩家打完字按 Enter 直接发送)
         if (messageInputField != null) {

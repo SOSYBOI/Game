@@ -18,7 +18,7 @@ public static class InputManager
     public static bool GetSkill4Input() => Input.GetKeyDown(KeyCode.R);
 
     // 暫停
-    public static bool GetPauseInput() => Input.GetKeyDown(KeyCode.Escape);
+    public static bool GetPauseInput() => Input.GetKeyDown(KeyCode.Escape) && !KeyBindManager.IsActive;
 
     // 互動
     public static bool GetInteractInput() => Input.GetKeyDown(KeyCode.F);
