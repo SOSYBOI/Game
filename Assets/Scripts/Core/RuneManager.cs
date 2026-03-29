@@ -26,7 +26,7 @@ public class RuneManager : MonoBehaviour
     public GameObject readMessageUI;
     public TMP_Text readContentText;
     public TMP_Text readLikesText;
-    [SerializeField] private GameObject openMessageUI;
+    [SerializeField] private TextMeshProUGUI openMessageUI;
 
     private FirebaseFirestore db;
     private const int CHUNK_SIZE = 50; 
@@ -39,7 +39,7 @@ public class RuneManager : MonoBehaviour
         // 游戏开始时隐藏所有 UI 并锁定鼠标
         if (writeMessageUI != null) writeMessageUI.SetActive(false);
         if (readMessageUI != null) readMessageUI.SetActive(false);
-        if (openMessageUI != null) openMessageUI.SetActive(false);
+        if (openMessageUI != null) openMessageUI.gameObject.SetActive(false);
 
         //LockCursor(true);
 
@@ -91,14 +91,15 @@ public class RuneManager : MonoBehaviour
         }
     }
 
-    public void OpenMessage()
+    public void OpenMessage(string text)
     {
-        openMessageUI.SetActive(true);
+        openMessageUI.text = text;
+        openMessageUI.gameObject.SetActive(true);
     }
 
     public void CloseMessage()
     {
-        openMessageUI.SetActive(false);
+        openMessageUI.gameObject.SetActive(false);
     }
 
     // 供 RuneInteractable 靠近按 E 时调用

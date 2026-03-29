@@ -46,6 +46,8 @@ namespace cherrydev
             _dialogText.text = text;
             _currentFullText = text;
 
+            if (_dialogCharacterImage == null) return;
+
             if (sprite == null)
             {
                 _dialogCharacterImage.color = new Color(_dialogCharacterImage.color.r,

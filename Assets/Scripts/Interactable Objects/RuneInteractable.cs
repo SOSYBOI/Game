@@ -21,7 +21,7 @@ public class RuneInteractable : MonoBehaviour
     {
         if (other.CompareTag("Player")) {
             isPlayerNearby = true;
-            RuneManager.Instance.OpenMessage();
+            RuneManager.Instance.OpenMessage("Interact (F)\r\n\r\nLike (G)");
             Debug.Log("[System] Rune discovered! Press E to read, F to like.");
         }
     }
