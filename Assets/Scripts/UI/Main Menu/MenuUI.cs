@@ -9,8 +9,7 @@ public enum MenuCommand
     START,
     SETTING,
     EXIT,
-    YES,
-    NO
+    RETURN
 }
 
 public class MenuUI : SelectionUI

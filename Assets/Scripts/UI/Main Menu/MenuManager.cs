@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            OpenPanel(MenuCommand.START);
+            OpenPanel(MenuCommand.RETURN);
         }
     }
 
@@ -64,6 +64,19 @@ public class MenuManager : MonoBehaviour
                 Debug.Log("Exit Game.");
 
                 confirmPanel.SetActive(true);
+
+                break;
+            case MenuCommand.RETURN:
+                Debug.Log("Return to Menu");
+
+                menuPanel.SetActive(true);
+                savePanel.SetActive(false);
+                settingPanel.SetActive(false);
+                confirmPanel.SetActive(false);
+
+                break;
+            default:
+                Debug.LogError("Unknown MenuCommand. Please handle such case.");
 
                 break;
         }
