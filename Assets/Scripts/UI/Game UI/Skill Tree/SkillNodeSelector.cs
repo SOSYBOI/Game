@@ -75,18 +75,18 @@ public class SkillNodeSelector : MonoBehaviour
             {
                 currentIndex--;
                 currentNode = skillNodes[currentIndex];
-                //Debug.Log($"Current Index: {currentIndex}");
+                Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentIndex < skillNodes.Count)
+            if (currentIndex < skillNodes.Count-1)
             {
                 currentIndex++;
                 currentNode = skillNodes[currentIndex];
-                //Debug.Log($"Current Index: {currentIndex}");
+                Debug.Log($"Current Index: {currentIndex}");
                 UIHover();
             }
 

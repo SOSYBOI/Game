@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d50a22a1780614419ee5917c8ab0c73, type: 3}
   m_Name: Upgrade 3
   m_EditorClassIdentifier: 
-  upgradeName: C
-  upgradeType: test
-  description: This is a description Test C
-  upgradeSprite: {fileID: 19056767, guid: b0a27571fcbaa65428fbf7f284750fe6, type: 3}
+  upgradeName: "\u9AD8\u8EAB\u4F4D"
+  upgradeType: 
+  description: 
+  upgradeSprite: {fileID: -338121680, guid: ed2cc3522cf100c45b60708f62eff73a, type: 3}
   skillType: 0
   value: 0
   locked: 1

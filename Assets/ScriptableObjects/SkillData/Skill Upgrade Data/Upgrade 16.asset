@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d50a22a1780614419ee5917c8ab0c73, type: 3}
-  m_Name: Upgrade 2
+  m_Name: Upgrade 16
   m_EditorClassIdentifier: 
-  upgradeName: "\u5E73\u8EAB\u4F4D"
+  upgradeName: "\u76FE\u724C"
   upgradeType: 
   description: 
-  upgradeSprite: {fileID: -1018312554, guid: ed2cc3522cf100c45b60708f62eff73a, type: 3}
+  upgradeSprite: {fileID: 1095924164, guid: ed2cc3522cf100c45b60708f62eff73a, type: 3}
   skillType: 0
   value: 0
   locked: 1
